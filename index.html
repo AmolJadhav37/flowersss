@@ -11,6 +11,12 @@
         body { margin: 0; overflow: hidden; background: linear-gradient(to bottom, #fff5f5, #ffe5e5); }
         .flower { position: absolute; width: 40px; height: 40px; }
         .surprise-flower { position: absolute; font-size: 2rem; }
+        .hover-effect:hover {
+    background-color: #c53030; /* Darker red on hover */
+    transform: translate(-50%, -50%) scale(1.05); /* Slightly scale and translate */
+    /* Add any additional hover effects here */
+}
+
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); }
             100% { transform: translateY(110vh) rotate(360deg); }
@@ -20,6 +26,7 @@
             50% { opacity: 1; }
             100% { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; }
         }
+       
     </style>
 </head>
 <body>
@@ -90,13 +97,14 @@
                             sorry dipti<br />thank you ess pagal ko itna sunane ke liye
                         </h1>
                     </div>
-                    <button onClick={handleSurprise} style={{
-                        position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
-                        padding: '10px 20px', fontSize: '1rem', background: '#e53e3e', color: 'white',
-                        border: 'none', borderRadius: '25px', cursor: 'pointer'
-                    }}>
-                        flowers and flowers just like you !
-                    </button>
+                    <button className="existing-classes hover-effect" onClick={handleSurprise} style={{
+    position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+    padding: '10px 20px', fontSize: '1rem', background: '#e53e3e', color: 'white',
+    border: 'none', borderRadius: '25px', cursor: 'pointer'
+}}>
+    flowers and flowers just like you !
+</button>
+
                 </div>
             );
         };
