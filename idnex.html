@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Floral Love Animation with Surprise</title>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: linear-gradient(to bottom, #fff5f5, #ffe5e5); }
+        .flower { position: absolute; width: 40px; height: 40px; }
+        .surprise-flower { position: absolute; font-size: 2rem; }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+        @keyframes surprise {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const flowerSVGs = [
+            `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="white" d="M50 10A40 40 0 1 1 50 90A40 40 0 1 1 50 10ZM50 30A20 20 0 1 0 50 70A20 20 0 1 0 50 30Z"/></svg>`,
+            `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="white" d="M50 10L90 50L50 90L10 50Z"/></svg>`,
+            `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="white" d="M50 10A40 40 0 1 1 50 90A40 40 0 1 1 50 10ZM50 30A20 20 0 1 0 50 70A20 20 0 1 0 50 30Z"/><circle cx="50" cy="50" r="10" fill="yellow"/></svg>`
+        ];
+
+        const Flower = ({ style }) => (
+            <img 
+                src={flowerSVGs[Math.floor(Math.random() * flowerSVGs.length)]} 
+                className="flower" 
+                style={style} 
+                alt="white flower" 
+            />
+        );
+
+        const SurpriseFlower = ({ emoji, style }) => (
+            <div className="surprise-flower" style={style}>{emoji}</div>
+        );
+
+        const App = () => {
+            const [flowers, setFlowers] = React.useState([]);
+            const [surpriseFlowers, setSurpriseFlowers] = React.useState([]);
+
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    setFlowers(prev => [...prev.slice(-50), {
+                        id: Date.now(),
+                        style: {
+                            left: `${Math.random() * 100}%`,
+                            animation: `fall ${10 + Math.random() * 20}s linear infinite`,
+                            animationDelay: `${Math.random() * 5}s`,
+                            transform: `scale(${0.5 + Math.random() * 1.5})`,
+                        }
+                    }]);
+                }, 300);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            const handleSurprise = () => {
+                const emojis = ['🌸', '🌼', '🌺', '🌻', '🌹', '💐', '🌷'];
+                setSurpriseFlowers(Array.from({ length: 200 }, (_, i) => ({
+                    id: i,
+                    emoji: emojis[Math.floor(Math.random() * emojis.length)],
+                    style: {
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        '--tx': `${Math.random() * 200 - 100}%`,
+                        '--ty': `${Math.random() * 200 - 100}%`,
+                        animation: `surprise ${5 + Math.random() * 5}s ease-out forwards`
+                    }
+                })));
+                setTimeout(() => setSurpriseFlowers([]), 10000);
+            };
+
+            return (
+                <div style={{ height: '100vh', width: '100vw' }}>
+                    {flowers.map(flower => <Flower key={flower.id} style={flower.style} />)}
+                    {surpriseFlowers.map(flower => <SurpriseFlower key={flower.id} {...flower} />)}
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+                        <h1 style={{ fontSize: '2rem', color: '#e53e3e', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                            sorry dipti<br />thank you ess pagal ko itna sunane ke liye
+                        </h1>
+                    </div>
+                    <button onClick={handleSurprise} style={{
+                        position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)',
+                        padding: '10px 20px', fontSize: '1rem', background: '#e53e3e', color: 'white',
+                        border: 'none', borderRadius: '25px', cursor: 'pointer'
+                    }}>
+                        flowers and flowers just like you !
+                    </button>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
